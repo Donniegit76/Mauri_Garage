@@ -1,5 +1,6 @@
 services:
   backend:
+    image: donniedream/mauri-garage-backend:latest
     build: ./backend
     restart: unless-stopped
     environment:
@@ -11,6 +12,7 @@ services:
       - app_data:/data
 
   frontend:
+    image: donniedream/mauri-garage-frontend:latest
     build: ./frontend
     restart: unless-stopped
     depends_on:

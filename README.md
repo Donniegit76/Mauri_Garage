@@ -45,6 +45,20 @@ Requisiti: [Docker Desktop](https://www.docker.com/products/docker-desktop/) ins
 
 Per fermare l'app: `docker compose down` (i dati restano salvati nel volume Docker).
 
+### Avvio rapido con immagini precompilate (senza build)
+
+Ad ogni push su GitHub, le immagini vengono costruite automaticamente e pubblicate su Docker Hub ([donniedream/mauri-garage-backend](https://hub.docker.com/r/donniedream/mauri-garage-backend), [donniedream/mauri-garage-frontend](https://hub.docker.com/r/donniedream/mauri-garage-frontend)). Su una macchina con solo Docker installato (anche senza il codice sorgente), basta:
+
+```bash
+git clone https://github.com/Donniegit76/Mauri_Garage.git
+cd Mauri_Garage
+cp .env.example .env   # opzionale
+docker compose pull
+docker compose up -d
+```
+
+Nessun build locale necessario — utile su macchine meno performanti o per aggiornare rapidamente a una nuova versione (`docker compose pull && docker compose up -d`).
+
 ## Accesso da smartphone in rete locale (LAN)
 
 L'app è pensata per essere usata anche da smartphone connesso alla stessa rete Wi-Fi del PC/server che la ospita.
