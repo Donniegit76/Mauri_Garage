@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Pattern tartan leggero in stile sedili GTI, usato solo come accento decorativo */
+.tartan-bg {
+  background-color: #111111;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255, 40, 0, 0.35) 0 2px, transparent 2px 22px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 22px);
+}
+
+.tartan-divider {
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #ff2800 0 8px,
+    #111111 8px 16px
+  );
+}
+
+.btn-primary {
+  @apply bg-gti-red hover:bg-gti-red-dark active:bg-gti-red-dark text-white font-bold rounded-xl px-5 py-3 text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-gti-charcoal hover:bg-black text-gti-silver font-semibold rounded-xl px-5 py-3 text-lg border border-gti-steel/40 transition-colors;
+}
+
+.input-field {
+  @apply w-full rounded-lg bg-gti-charcoal border border-gti-steel/40 px-4 py-3 text-lg text-white placeholder-gti-steel focus:outline-none focus:ring-2 focus:ring-gti-red;
+}
+
+.card {
+  @apply bg-gti-charcoal border border-gti-steel/20 rounded-xl p-4 shadow-lg;
+}
