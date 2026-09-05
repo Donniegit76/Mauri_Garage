@@ -19,6 +19,7 @@ export default function Header() {
             </h1>
             <p className="text-[11px] text-gti-silver uppercase tracking-widest">
               Officina &amp; Catalogo Ricambi
+              <span className="text-gti-steel normal-case tracking-normal"> · v{__APP_VERSION__}</span>
             </p>
           </div>
         </div>

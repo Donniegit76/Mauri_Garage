@@ -45,6 +45,8 @@ Requisiti: [Docker Desktop](https://www.docker.com/products/docker-desktop/) ins
 
 Per fermare l'app: `docker compose down` (i dati restano salvati nel volume Docker).
 
+La versione in esecuzione è indicata nell'intestazione dell'app (es. `v1.1.0`), utile per verificare che l'aggiornamento sia andato a buon fine. L'elenco delle versioni è in [CHANGELOG.md](CHANGELOG.md).
+
 ### Avvio rapido con immagini precompilate (senza build)
 
 Ad ogni push su GitHub, le immagini vengono costruite automaticamente e pubblicate su Docker Hub ([donniedream/mauri-garage-backend](https://hub.docker.com/r/donniedream/mauri-garage-backend), [donniedream/mauri-garage-frontend](https://hub.docker.com/r/donniedream/mauri-garage-frontend)). Su una macchina con solo Docker installato (anche senza il codice sorgente), basta:
@@ -58,6 +60,8 @@ docker compose up -d
 ```
 
 Nessun build locale necessario — utile su macchine meno performanti o per aggiornare rapidamente a una nuova versione (`docker compose pull && docker compose up -d`).
+
+Oltre a `latest`, ogni build pubblica le immagini anche con il tag della versione (es. `donniedream/mauri-garage-backend:v1.1.0`): per restare su una versione precisa basta sostituire `:latest` con `:vX.Y.Z` in `docker-compose.yml`.
 
 ## Accesso da smartphone in rete locale (LAN)
 
