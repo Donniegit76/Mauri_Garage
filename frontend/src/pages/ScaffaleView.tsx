@@ -19,6 +19,8 @@ export default function ScaffaleView() {
   if (loading) return <p className="text-gti-silver">Caricamento...</p>;
   if (!group) return <p className="text-gti-silver">Scaffale non trovato.</p>;
 
+  const sciolti = group.items_senza_scatola ?? [];
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -52,6 +54,30 @@ export default function ScaffaleView() {
           </div>
         </div>
       ))}
+
+      {sciolti.length > 0 && (
+        <div className="space-y-2">
+          <div className="tartan-divider rounded-full" />
+          <div>
+            <h3 className="font-bold text-gti-silver">
+              Fuori scatola{" "}
+              <span className="text-gti-steel font-normal">({sciolti.length})</span>
+            </h3>
+            <p className="text-xs text-gti-steel">
+              Pezzi appoggiati direttamente sullo scaffale {group.scaffale}
+            </p>
+          </div>
+          <div className="space-y-2">
+            {sciolti.map((item) => (
+              <ItemCard key={item.id} item={item} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {group.scatole.length === 0 && sciolti.length === 0 && (
+        <p className="text-center text-gti-steel py-8">Scaffale vuoto.</p>
+      )}
     </div>
   );
 }

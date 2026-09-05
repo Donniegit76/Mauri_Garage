@@ -126,12 +126,47 @@ def test_item_without_codice_or_scatola(client):
     assert response.json()["scatola"] is None
 
     scaffale_detail = client.get("/api/scaffali/S3").json()
-    assert scaffale_detail["scatole"][0]["scatola"] == "Senza scatola"
-    assert scaffale_detail["scatole"][0]["items"][0]["id"] == item_id
+    # I pezzi sciolti non generano una scatola fittizia: stanno fuori dalle scatole
+    assert scaffale_detail["scatole"] == []
+    assert [i["id"] for i in scaffale_detail["items_senza_scatola"]] == [item_id]
 
     senza_scatola_items = client.get("/api/scatole/S3/Senza scatola").json()
     assert len(senza_scatola_items) == 1
     assert senza_scatola_items[0]["id"] == item_id
+
+
+def test_scaffale_separa_scatole_e_pezzi_sciolti(client):
+    _make_ricambio(client, codice="A1", scaffale="S4", scatola="2")
+    _make_ricambio(client, codice="A2", scaffale="S4", scatola="10")
+    sciolto = _make_ricambio(client, codice="A3", scaffale="S4", scatola=None).json()["id"]
+    # scatola vuota nel DB storico: va trattata come "sciolto sullo scaffale"
+    vuoto = _make_ricambio(client, codice="A4", scaffale="S4", scatola="   ").json()
+    assert vuoto["scatola"] is None
+
+    detail = client.get("/api/scaffali/S4").json()
+    assert [s["scatola"] for s in detail["scatole"]] == ["2", "10"]
+    assert sorted(i["id"] for i in detail["items_senza_scatola"]) == sorted([sciolto, vuoto["id"]])
+
+    summary = {row["scaffale"]: row for row in client.get("/api/scaffali").json()}["S4"]
+    assert summary["numero_items"] == 4
+    assert summary["numero_scatole"] == 2
+    assert summary["numero_senza_scatola"] == 2
+
+
+def test_meta_scatole_e_filtro_senza_scatola(client):
+    _make_ricambio(client, codice="A1", scaffale="S5", scatola="2")
+    _make_ricambio(client, codice="A2", scaffale="S5", scatola="10")
+    _make_ricambio(client, codice="A3", scaffale="S6", scatola="Z")
+    sciolto = _make_ricambio(client, codice="A4", scaffale="S5", scatola=None).json()["id"]
+
+    assert client.get("/api/meta/scatole").json() == ["2", "10", "Z"]
+    assert client.get("/api/meta/scatole", params={"scaffale": "S5"}).json() == ["2", "10"]
+
+    filtrati = client.get("/api/items", params={"scatola": "10"}).json()
+    assert [i["codice"] for i in filtrati["items"]] == ["A2"]
+
+    sciolti = client.get("/api/items", params={"scatola": "Senza scatola"}).json()
+    assert [i["id"] for i in sciolti["items"]] == [sciolto]
 
 
 def test_export_excel(client):

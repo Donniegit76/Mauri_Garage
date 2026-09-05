@@ -131,8 +131,9 @@ App disponibile su `http://localhost:5173` (le chiamate a `/api` e `/photos` ven
 ## Funzionalità principali
 
 - Catalogazione ricambi e prodotti di cosmetica auto, con foto, categoria, scaffale/scatola, quantità e note
-- Ricerca full-text (parziale, case-insensitive) su codice e descrizione, con filtri per categoria/scaffale/scatola
+- Ricerca full-text (parziale, case-insensitive) su codice e descrizione, con filtri a tendina per categoria, scaffale e scatola (inclusa l'opzione "Senza scatola")
 - Vista "Scaffali" con conteggi, vista ad albero scaffale → scatole → ricambi, vista dedicata per singola scatola
+- I pezzi appoggiati sullo scaffale senza scatola non vengono raggruppati in una scatola fittizia: compaiono in una sezione "Fuori scatola" e sono filtrabili a parte
 - Esportazione in Excel (.xlsx), completa o filtrata sui risultati di ricerca correnti
 - Upload foto da smartphone con apertura diretta della fotocamera
 - Protezione opzionale con password unica (nessun sistema di account)

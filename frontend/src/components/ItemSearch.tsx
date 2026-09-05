@@ -14,6 +14,7 @@ export default function ItemSearch({ sezione, title }: Props) {
   const [search, setSearch] = useState("");
   const [categoria, setCategoria] = useState("");
   const [scaffale, setScaffale] = useState("");
+  const [scatola, setScatola] = useState("");
   const [items, setItems] = useState<Item[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function ItemSearch({ sezione, title }: Props) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(true);
-      listItems({ sezione, search, categoria, scaffale, page: 1, page_size: 100 })
+      listItems({ sezione, search, categoria, scaffale, scatola, page: 1, page_size: 100 })
         .then((res) => {
           setItems(res.items);
           setTotal(res.total);
@@ -30,12 +31,12 @@ export default function ItemSearch({ sezione, title }: Props) {
         .finally(() => setLoading(false));
     }, 250);
     return () => clearTimeout(timeout);
-  }, [sezione, search, categoria, scaffale]);
+  }, [sezione, search, categoria, scaffale, scatola]);
 
   async function handleExport() {
     setExporting(true);
     try {
-      await downloadExport({ sezione, search, categoria, scaffale });
+      await downloadExport({ sezione, search, categoria, scaffale, scatola });
     } finally {
       setExporting(false);
     }
@@ -49,9 +50,11 @@ export default function ItemSearch({ sezione, title }: Props) {
         sezione={sezione}
         categoria={categoria}
         scaffale={scaffale}
+        scatola={scatola}
         onChange={(next) => {
           setCategoria(next.categoria);
           setScaffale(next.scaffale);
+          setScatola(next.scatola);
         }}
       />
 

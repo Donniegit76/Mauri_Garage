@@ -22,8 +22,21 @@ class Sezione(str, enum.Enum):
     carrozzeria = "carrozzeria"
 
 
-# Etichetta usata per raggruppare/filtrare gli item senza scatola assegnata
+# Etichetta usata per filtrare gli item appoggiati sullo scaffale senza scatola
 NO_SCATOLA_LABEL = "Senza scatola"
+
+
+def normalizza_scatola(valore: str | None) -> str | None:
+    """Riporta a None le scatole vuote o composte da soli spazi.
+
+    Nel database storico alcune scatole possono essere salvate come stringa
+    vuota invece che NULL: entrambe significano "ricambio sciolto sullo
+    scaffale" e vanno trattate allo stesso modo.
+    """
+    if valore is None:
+        return None
+    valore = valore.strip()
+    return valore or None
 
 
 class Item(Base):

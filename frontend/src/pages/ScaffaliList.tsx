@@ -24,6 +24,9 @@ export default function ScaffaliList() {
             <span className="font-black text-white text-lg">Scaffale {s.scaffale}</span>
             <span className="text-gti-silver text-sm">
               {s.numero_scatole} scatole · {s.numero_items} pezzi
+              {s.numero_senza_scatola > 0 && (
+                <span className="text-gti-steel"> · {s.numero_senza_scatola} fuori scatola</span>
+              )}
             </span>
           </Link>
         ))}
