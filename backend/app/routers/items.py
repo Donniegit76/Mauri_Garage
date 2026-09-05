@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from .. import auth
 from ..database import get_db
-from ..models import Item, Sezione
+from ..models import NO_SCATOLA_LABEL, Item, Sezione, normalizza_scatola
 from ..schemas import ItemCreate, ItemListOut, ItemOut, ItemUpdate
 
 router = APIRouter(prefix="/items", tags=["items"], dependencies=[Depends(auth.require_auth)])
@@ -35,7 +35,12 @@ def apply_filters(
     if scaffale:
         query = query.filter(Item.scaffale == scaffale)
     if scatola:
-        query = query.filter(Item.scatola == scatola)
+        # NULL e stringa vuota significano entrambi "sciolto sullo scaffale"
+        scatola_norm = func.nullif(func.trim(func.coalesce(Item.scatola, "")), "")
+        if scatola == NO_SCATOLA_LABEL:
+            query = query.filter(scatola_norm.is_(None))
+        else:
+            query = query.filter(scatola_norm == scatola)
     return query
 
 
@@ -63,7 +68,9 @@ def list_items(
 
 @router.post("", response_model=ItemOut, status_code=201)
 def create_item(payload: ItemCreate, db: Session = Depends(get_db)):
-    item = Item(**payload.model_dump())
+    data = payload.model_dump()
+    data["scatola"] = normalizza_scatola(data.get("scatola"))
+    item = Item(**data)
     db.add(item)
     db.commit()
     db.refresh(item)
@@ -85,6 +92,8 @@ def update_item(item_id: int, payload: ItemUpdate, db: Session = Depends(get_db)
         raise HTTPException(status_code=404, detail="Ricambio non trovato")
 
     for field, value in payload.model_dump(exclude_unset=True).items():
+        if field == "scatola":
+            value = normalizza_scatola(value)
         setattr(item, field, value)
 
     db.commit()

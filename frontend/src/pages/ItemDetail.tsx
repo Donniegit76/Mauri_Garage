@@ -44,7 +44,7 @@ export default function ItemDetail() {
           <p className="text-gti-silver">{item.descrizione}</p>
         </div>
         <span className="text-xs bg-gti-red/20 text-gti-red font-bold px-2 py-1 rounded shrink-0">
-          {item.scaffale} / {item.scatola || "Senza scatola"}
+          {item.scatola ? `${item.scaffale} / ${item.scatola}` : `${item.scaffale} · fuori scatola`}
         </span>
       </div>
 

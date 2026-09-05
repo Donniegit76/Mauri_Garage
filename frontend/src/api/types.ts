@@ -1,5 +1,8 @@
 export type Sezione = "ricambio" | "cosmetica" | "carrozzeria";
 
+// Valore speciale usato nei filtri per i pezzi appoggiati sullo scaffale, fuori da ogni scatola
+export const SENZA_SCATOLA = "Senza scatola";
+
 export const CATEGORIE_CARROZZERIA = [
   "Bombolette",
   "Vernice",
@@ -57,6 +60,7 @@ export interface ScaffaleSummary {
   scaffale: string;
   numero_items: number;
   numero_scatole: number;
+  numero_senza_scatola: number;
 }
 
 export interface ScatolaGroup {
@@ -67,6 +71,7 @@ export interface ScatolaGroup {
 export interface ScaffaleGroup {
   scaffale: string;
   scatole: ScatolaGroup[];
+  items_senza_scatola: Item[];
 }
 
 export interface SearchFilters {

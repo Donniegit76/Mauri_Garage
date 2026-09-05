@@ -8,7 +8,7 @@ from .routers import auth, export, items, locations, photos
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Mauri_Garage API", version="1.0.0")
+app = FastAPI(title="Mauri_Garage API", version="1.1.0")
 
 app.add_middleware(
     CORSMiddleware,

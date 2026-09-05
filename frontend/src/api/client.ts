@@ -134,6 +134,14 @@ export function getScaffaliMeta() {
   return request<string[]>("/meta/scaffali");
 }
 
+export function getScatoleMeta(scaffale?: string, sezione?: Sezione) {
+  const query = new URLSearchParams();
+  if (scaffale) query.set("scaffale", scaffale);
+  if (sezione) query.set("sezione", sezione);
+  const qs = query.toString();
+  return request<string[]>(`/meta/scatole${qs ? `?${qs}` : ""}`);
+}
+
 export function buildExportUrl(filters: SearchFilters): string {
   return `/api/export/excel${buildQuery(filters)}`;
 }

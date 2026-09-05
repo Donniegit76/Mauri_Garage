@@ -68,12 +68,15 @@ class ScatolaGroup(BaseModel):
 class ScaffaleGroup(BaseModel):
     scaffale: str
     scatole: list[ScatolaGroup]
+    # Ricambi appoggiati direttamente sullo scaffale, fuori da qualsiasi scatola
+    items_senza_scatola: list[ItemOut] = []
 
 
 class ScaffaleSummary(BaseModel):
     scaffale: str
     numero_items: int
     numero_scatole: int
+    numero_senza_scatola: int = 0
 
 
 class LoginRequest(BaseModel):

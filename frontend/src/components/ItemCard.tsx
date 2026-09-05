@@ -28,7 +28,7 @@ export default function ItemCard({ item }: { item: Item }) {
         <p className="text-gti-silver text-sm truncate">{item.descrizione}</p>
         <div className="flex gap-1.5 mt-1 flex-wrap">
           <span className="text-[11px] bg-gti-red/20 text-gti-red font-bold px-2 py-0.5 rounded">
-            {item.scaffale} / {item.scatola || "Senza scatola"}
+            {item.scatola ? `${item.scaffale} / ${item.scatola}` : `${item.scaffale} · fuori scatola`}
           </span>
           {item.categoria && (
             <span className="text-[11px] bg-white/5 text-gti-silver px-2 py-0.5 rounded">
